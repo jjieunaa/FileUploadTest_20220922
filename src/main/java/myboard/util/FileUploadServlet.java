@@ -12,6 +12,11 @@ import javax.servlet.http.Part;
 
 public class FileUploadServlet extends HttpServlet {
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
+	
 	// multipart인지 check
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,11 +48,11 @@ public class FileUploadServlet extends HttpServlet {
 			
 			if (part.getHeader("Content-Disposition").contains("filename=")) {
 				writer.println("<br /> size = " + part.getSize());
-				String fileName = part.getSubmittedFileName();
+				String fileName = part.getSubmittedFileName();	// 업로드한 파일명, servlet 3.1 이상
 				writer.println("<br /> filename = " + fileName);
 				
 				if (part.getSize() > 0) {
-					part.write("c:/filetemp/" + fileName);
+					part.write("c:/filetemp/" + fileName);	// 여기에서 업로드가 일어남
 					part.delete();
 				}
 			} else {
